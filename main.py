@@ -4,15 +4,19 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import todos
+from projects import *
 
 def addprojects():
     box = gtk.VBox(False, 0)
     button = gtk.Button("New project")
     box.pack_start(button, False, False, 0)
+    button.connect("clicked", add_project, None)
     button.show()
-    button = gtk.Button("Open Project")
-    box.pack_start(button, False, False, 0)
-    button.show()
+    projects = get_projects()
+    for project in projects:
+        button = gtk.Button(project)
+        box.pack_start(button, False, False, 0)
+        button.show()
     return box
 
 def addlist():
@@ -23,7 +27,6 @@ def addlist():
     label.show()
     todolist = todos.gettodos(1)
     for todo in todolist:
-        print type(todo["details"])
         button = gtk.Button(todo["title"])
         box.pack_start(button, False, False, 1)
         button.show()
