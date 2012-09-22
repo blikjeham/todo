@@ -6,19 +6,6 @@ import gtk
 import todos
 from projects import *
 
-def addprojects():
-    box = gtk.VBox(False, 0)
-    button = gtk.Button("New project")
-    box.pack_start(button, False, False, 0)
-    button.connect("clicked", add_project, None)
-    button.show()
-    projects = get_projects()
-    for project in projects:
-        button = gtk.Button(project)
-        box.pack_start(button, False, False, 0)
-        button.show()
-    return box
-
 def addlist():
     box = gtk.VBox(False, 0)
     label = gtk.Label("Current ToDo")
@@ -37,6 +24,20 @@ def addlist():
         text.show()
     return box
 
+def showprojects():
+    box = gtk.VBox(False, 0)
+    button = gtk.Button("New project")
+    box.pack_start(button, False, False, 0)
+    button.connect("clicked", add_project, None)
+    button.show()
+    projects = get_projects()
+    for project in projects:
+        button = gtk.Button(project)
+        button.connect("clicked", open_project, project)
+        box.pack_start(button, False, False, 0)
+        button.show()
+    return box
+
 class ToDoWindow:
 
     def delete_event(self, wigdet, event, data=None):
@@ -52,7 +53,7 @@ class ToDoWindow:
         window.connect("destroy", self.destroy)
 
         box = gtk.HBox(False, 0)
-        projpane = addprojects()
+        projpane = showprojects()
         box.pack_start(projpane, False, True, 0)
         projpane.show()
 
